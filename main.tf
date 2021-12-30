@@ -20,6 +20,10 @@ terraform {
   }
 }
 
+variable "GCP_PROJECT" {
+  description = "GCP Project to utilize"
+  type = string
+}
 
 provider "google" {
   project = var.GCP_PROJECT
