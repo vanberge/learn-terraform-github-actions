@@ -19,9 +19,18 @@ terraform {
     }
   }
 }
-
 variable "GCP_PROJECT" {
   description = "GCP Project to utilize"
+  type        = string
+}
+
+variable "GCP_VM_BASENAME" {
+  description = "GCP Base VM name"
+  type        = string
+}
+
+variable "GCP_VPC" {
+  description = "GCP VPC network"
   type        = string
 }
 
@@ -34,7 +43,7 @@ provider "google" {
 resource "random_pet" "vm" {}
 
 resource "google_compute_instance" "vm_instance" {
-  name         = "${random_pet.vm.id}-vm"
+  name         = "${var.GCP_VM_BASENAME}-${random_pet.vm.id}"
   machine_type = "f1-micro"
 
   boot_disk {
@@ -52,6 +61,6 @@ resource "google_compute_instance" "vm_instance" {
 }
 
 resource "google_compute_network" "vpc_network" {
-  name                    = "evb-tf-vpc"
+  name                    = var.GCP_VPC
   auto_create_subnetworks = "true"
 }
