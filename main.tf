@@ -27,8 +27,10 @@ provider "google" {
   zone    = "us-central1-a"
 }
 
+resource "random_pet" "vm" {}
+
 resource "google_compute_instance" "vm_instance" {
-  name         = "evb-tf-instance"
+  name         = "${random_pet.vm.id}-vm"
   machine_type = "f1-micro"
 
   boot_disk {
