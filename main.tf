@@ -22,7 +22,7 @@ terraform {
 
 variable "GCP_PROJECT" {
   description = "GCP Project to utilize"
-  type = string
+  type        = string
 }
 
 provider "google" {
