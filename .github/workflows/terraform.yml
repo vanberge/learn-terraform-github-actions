@@ -11,8 +11,13 @@ jobs:
     name: "Terraform"
     runs-on: ubuntu-latest
     steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      
       - name: Checkout
         uses: actions/checkout@v2
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
@@ -35,7 +40,7 @@ jobs:
       - name: Terraform Plan
         id: plan
         if: github.event_name == 'pull_request'
-        run: terraform plan -no-color
+        run: terraform plan #-no-color try it in color!
         continue-on-error: true
 
       - uses: actions/github-script@0.9.0
@@ -74,3 +79,5 @@ jobs:
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve
+
+      - run: echo "🍏 This job's status is ${{ job.status }}."

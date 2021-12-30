@@ -1,8 +1,8 @@
 terraform {
   required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "3.26.0"
+    google = {
+      source  = "hashicorp/google"
+      version = "3.5.0"
     }
     random = {
       source  = "hashicorp/random"
@@ -12,45 +12,40 @@ terraform {
   required_version = ">= 1.1.0"
 
   cloud {
-    organization = "REPLACE_ME"
+    organization = "evb-sandbox"
 
     workspaces {
-      name = "gh-actions-demo"
+      name = "evb-gcp-sandbox"
     }
   }
 }
 
 
-provider "aws" {
-  region = "us-west-2"
+provider "google" {
+  project = "evb-gcp-tf"
+  region  = "us-central1"
+  zone    = "us-central1-a"
 }
 
+resource "google_compute_instance" "vm_instance" {
+  name         = "evb-tf-instance"
+  machine_type = "f1-micro"
 
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-9"
+    }
+  }
 
-resource "random_pet" "sg" {}
-
-resource "aws_instance" "web" {
-  ami                    = "ami-830c94e3"
-  instance_type          = "t2.micro"
-  vpc_security_group_ids = [aws_security_group.web-sg.id]
-
-  user_data = <<-EOF
-              #!/bin/bash
-              echo "Hello, World" > index.html
-              nohup busybox httpd -f -p 8080 &
-              EOF
-}
-
-resource "aws_security_group" "web-sg" {
-  name = "${random_pet.sg.id}-sg"
-  ingress {
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+  network_interface {
+    # A default network is created for all GCP projects
+    network = google_compute_network.vpc_network.self_link
+    access_config {
+    }
   }
 }
 
-output "web-address" {
-  value = "${aws_instance.web.public_dns}:8080"
+resource "google_compute_network" "vpc_network" {
+  name                    = "evb-tf-vpc"
+  auto_create_subnetworks = "true"
 }
