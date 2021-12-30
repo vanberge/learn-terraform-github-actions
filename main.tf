@@ -12,16 +12,16 @@ terraform {
   required_version = ">= 1.1.0"
 
   cloud {
-    organization = "evb-sandbox"
+    organization = "${var.TF_ORG}"
 
     workspaces {
-      name = "evb-gcp-sandbox"
+      name = "${var.TF_WORKSPACE}"
     }
   }
 }
 
 provider "google" {
-  project = "${GCP_PROJECT}"
+  project = "${var.GCP_PROJECT}"
   region  = "us-central1"
   zone    = "us-central1-a"
 }
@@ -29,7 +29,7 @@ provider "google" {
 resource "random_pet" "vm" {}
 
 resource "google_compute_instance" "vm_instance" {
-  name         = "${GCP_VM_BASENAME}-${random_pet.vm.id}"
+  name         = "${var.GCP_VM_BASENAME}"
   machine_type = "f1-micro"
 
   boot_disk {
@@ -47,6 +47,6 @@ resource "google_compute_instance" "vm_instance" {
 }
 
 resource "google_compute_network" "vpc_network" {
-  name                    = "${GCP_VPC}"
+  name                    = "${var.GCP_VPC}"
   auto_create_subnetworks = "true"
 }
