@@ -20,6 +20,7 @@ terraform {
   }
 }
 
+
 provider "google" {
   project = var.GCP_PROJECT
   region  = "us-central1"
@@ -29,7 +30,7 @@ provider "google" {
 resource "random_pet" "vm" {}
 
 resource "google_compute_instance" "vm_instance" {
-  name         = var.GCP_VM_BASENAME
+  name         = "${random_pet.vm.id}-vm"
   machine_type = "f1-micro"
 
   boot_disk {
@@ -47,6 +48,6 @@ resource "google_compute_instance" "vm_instance" {
 }
 
 resource "google_compute_network" "vpc_network" {
-  name                    = var.GCP_VPC
+  name                    = "evb-tf-vpc"
   auto_create_subnetworks = "true"
 }
