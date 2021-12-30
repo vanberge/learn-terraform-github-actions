@@ -43,7 +43,7 @@ provider "google" {
 resource "random_pet" "vm" {}
 
 resource "google_compute_instance" "vm_instance" {
-  name         = "${var.GCP_VM_BASENAME}-${random_pet.vm.id}"
+  name         = "${random_pet.vm.id}-vm"
   machine_type = "f1-micro"
 
   boot_disk {
