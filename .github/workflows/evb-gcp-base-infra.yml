@@ -1,4 +1,4 @@
-name: "Terraform"
+name: "GCP Infra"
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   terraform:
-    name: "GCP Base infra build"
+    name: "Build GCP Base infra build"
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
