@@ -12,10 +12,10 @@ terraform {
   required_version = ">= 1.1.0"
 
   cloud {
-    organization = "${TF_ORG}"
+    organization = "evb-sandbox"
 
     workspaces {
-      name = "${TF_WORKSPACE}"
+      name = "evb-gcp-sandbox"
     }
   }
 }
