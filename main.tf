@@ -60,14 +60,14 @@ resource "google_compute_instance" "vm_instance" {
   }
 }
 
-resource "google_compute_subnetwork" "vpc_subnetwork_private" {
-  name          = "${var.GCP_VPC}-sn"
+resource "google_compute_subnetwork" "vpc_subnetwork" {
+  name          = "${var.GCP_VPC}-ss"
   ip_cidr_range = "10.0.0.0/24"
   region        = "us-central1"
   network       = var.GCP_VPC
 }
 
-resource "google_compute_subnetwork" "vpc_subnetwork_private" {
+resource "google_compute_subnetwork" "vpc_subnetwork_k8s" {
   name          = "${var.GCP_VPC}-k8s"
   ip_cidr_range = "10.1.0.0/24"
   region        = "us-central1"
