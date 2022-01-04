@@ -54,30 +54,50 @@ resource "google_compute_instance" "vm_instance" {
 
   network_interface {
     # A default network is created for all GCP projects
-    network = google_compute_subnetwork.vpc_subnetwork.self_link
+    network = google_compute_subnetwork.vpc_subnetwork_private.self_link
     access_config {
     }
   }
 }
 
-resource "google_compute_subnetwork" "vpc_subnetwork" {
-  name          = "${var.GCP_VPC}-ss"
-  ip_cidr_range = "10.0.0.0/24"
-  region        = "us-central1"
-  network       = var.GCP_VPC
+resource "google_compute_network" "vpc" {
+  name    = "${var.GCP_VPC}-shared"
+  project = var.GCP_PROJECT
+  auto_create_subnetworks = "false"
+  routing_mode = "REGIONAL"
 }
 
-resource "google_compute_subnetwork" "vpc_subnetwork_k8s" {
-  name          = "${var.GCP_VPC}-k8s"
-  ip_cidr_range = "10.1.0.0/24"
-  region        = "us-central1"
-  network       = var.GCP_VPC
-  secondary_ip_range {
-    range_name    = "${var.GCP_VPC}-k8s-services"
-    ip_cidr_range = "10.2.0.0/24"
-  }
-  secondary_ip_range {
-    range_name    = "${var.GCP_VPC}-k8s-pods"
+resource "google_compute_subnetwork" "vpc_subnetwork_private" {
+  name = "${var.GCP_VPC}-shared-sn"
+
+  project = var.GCP_PROJECT
+  region  = "us-central1"
+  network = google_compute_network.vpc.self_link
+  ip_cidr_range = "10.0.0.0/24"
+}
+
+resource "google_compute_network" "k8s_vpc" {
+  name    = "${var.GCP_VPC}-k8s"
+  project = var.GCP_PROJECT
+  auto_create_subnetworks = "false"
+  routing_mode = "REGIONAL"
+}
+
+resource "google_compute_subnetwork" "k8s_vpc_subnetwork_private" {
+  name = "${var.GCP_VPC}-k8s"
+  project = var.GCP_PROJECT
+  region  = "us-central1"
+  network = google_compute_network.k8s_vpc.self_link
+  ip_cidr_range = "10.0.0.0/24"
+
+  secondary_ip_range =[
+    {
+    range_name = "${var.GCP_VPC}-k8s-services"
+    ip_cidr_range = "10.0.1.0/24"
+    },
+    {
+    range_name = "${var.GCP_VPC}-k8s-pods"
     ip_cidr_range = "10.99.0.0/23"
-  }
+    }
+  ]
 }
