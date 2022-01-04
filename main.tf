@@ -65,28 +65,28 @@ resource "google_compute_network" "vpc_network" {
   auto_create_subnetworks = "false"
   subnets = [
     {
-        subnet_name           = "${var.GCP_VPC}-sn"
-        subnet_ip             = "10.0.0.0/24"
-        subnet_region         = "us-central1"
-        description           = "Primary custom subnet"
+      subnet_name   = "${var.GCP_VPC}-sn"
+      subnet_ip     = "10.0.0.0/24"
+      subnet_region = "us-central1"
+      description   = "Primary custom subnet"
     },
     {
-        subnet_name           = "${var.GCP_VPC}-k8s"
-        subnet_ip             = "10.0.1.0/24"
-        subnet_region         = "us-central1"
-        description           = "Primary GKE Subnet"
-    },   
+      subnet_name   = "${var.GCP_VPC}-k8s"
+      subnet_ip     = "10.0.1.0/24"
+      subnet_region = "us-central1"
+      description   = "Primary GKE Subnet"
+    },
   ]
   secondary_ranges = {
     gke-subnet = [
-        {
-            range_name    = "gke-subnet-services"
-            ip_cidr_range = "10.0.2.0/24"
-        },
-        {
-            range_name    = "gke-subnet-pods"
-            ip_cidr_range = "10.99.0.0/22"
-        }
+      {
+        range_name    = "gke-subnet-services"
+        ip_cidr_range = "10.0.2.0/24"
+      },
+      {
+        range_name    = "gke-subnet-pods"
+        ip_cidr_range = "10.99.0.0/22"
+      }
     ]
   }
 }
