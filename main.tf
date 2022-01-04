@@ -54,25 +54,20 @@ resource "google_compute_instance" "vm_instance" {
 
   network_interface {
     # A default network is created for all GCP projects
-    network = google_compute_network.vpc_network.self_link
+    network = google_compute_network.vpc_subnetwork_private.self_link
     access_config {
     }
   }
 }
 
-resource "google_compute_network" "vpc_network" {
-  name                    = var.GCP_VPC
-  auto_create_subnetworks = "false"
-}
-
-resource "google_compute_subnetwork" "network-with-private-secondary-ip-ranges" {
+resource "google_compute_subnetwork" "vpc_subnetwork_private" {
   name          = "${var.GCP_VPC}-sn"
   ip_cidr_range = "10.0.0.0/24"
   region        = "us-central1"
   network       = var.GCP_VPC
 }
 
-resource "google_compute_subnetwork" "k8s-network-with-private-secondary-ip-ranges" {
+resource "google_compute_subnetwork" "vpc_subnetwork_private" {
   name          = "${var.GCP_VPC}-k8s"
   ip_cidr_range = "10.1.0.0/24"
   region        = "us-central1"
