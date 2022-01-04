@@ -72,7 +72,7 @@ resource "google_compute_subnetwork" "network-with-private-secondary-ip-ranges" 
   network       = var.GCP_VPC
 }
 
-resource "google_compute_subnetwork" "network-with-private-secondary-ip-ranges" {
+resource "google_compute_subnetwork" "k8s-network-with-private-secondary-ip-ranges" {
   name          = "${var.GCP_VPC}-k8s"
   ip_cidr_range = "10.1.0.0/24"
   region        = "us-central1"
