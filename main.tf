@@ -63,30 +63,26 @@ resource "google_compute_instance" "vm_instance" {
 resource "google_compute_network" "vpc_network" {
   name                    = var.GCP_VPC
   auto_create_subnetworks = "false"
-  subnets = [
-    {
-      subnet_name   = "${var.GCP_VPC}-sn"
-      subnet_ip     = "10.0.0.0/24"
-      subnet_region = "us-central1"
-      description   = "Primary custom subnet"
-    },
-    {
-      subnet_name   = "${var.GCP_VPC}-k8s"
-      subnet_ip     = "10.0.1.0/24"
-      subnet_region = "us-central1"
-      description   = "Primary GKE Subnet"
-    },
-  ]
-  secondary_ranges = {
-    gke-subnet = [
-      {
-        range_name    = "gke-subnet-services"
-        ip_cidr_range = "10.0.2.0/24"
-      },
-      {
-        range_name    = "gke-subnet-pods"
-        ip_cidr_range = "10.99.0.0/22"
-      }
-    ]
+}
+
+resource "google_compute_subnetwork" "network-with-private-secondary-ip-ranges" {
+  name          = "${var.GCP_VPC}-sn"
+  ip_cidr_range = "10.0.0.0/24"
+  region        = "us-central1"
+  network       = var.GCP_VPC
+}
+
+resource "google_compute_subnetwork" "network-with-private-secondary-ip-ranges" {
+  name          = "${var.GCP_VPC}-k8s"
+  ip_cidr_range = "10.1.0.0/24"
+  region        = "us-central1"
+  network       = var.GCP_VPC
+  secondary_ip_range {
+    range_name    = "${var.GCP_VPC}-k8s-services"
+    ip_cidr_range = "10.2.0.0/24"
+  }
+  secondary_ip_range {
+    range_name    = "${var.GCP_VPC}-k8s-pods"
+    ip_cidr_range = "10.99.0.0/23"
   }
 }
