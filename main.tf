@@ -120,7 +120,7 @@ resource "google_container_node_pool" "primary_nodes" {
   location          = "us-central1"
   cluster           = google_container_cluster.primary.name
   node_count        = 2
-  max_pods_per_node = 20
+  max_pods_per_node = 20 //does this work
 
   node_config {
     preemptible  = false
