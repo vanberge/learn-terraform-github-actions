@@ -108,6 +108,12 @@ resource "google_container_cluster" "primary" {
   location                 = "us-central1"
   remove_default_node_pool = true
   initial_node_count       = 1
+  network                  = var.GCP_VPC
+  subnetwork               = "${var.GCP_VPC}-k8s"
+  ip_allocation_policy {
+    cluster_secondary_range_name  = "${var.GCP_VPC}-k8s-pods"
+    services_secondary_range_name = "${var.GCP_VPC}-k8s-services"
+  }
 }
 
 resource "google_container_node_pool" "primary_preemptible_nodes" {
