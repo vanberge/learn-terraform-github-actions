@@ -48,8 +48,7 @@ resource "google_compute_network" "vpc" {
 }
 
 resource "google_compute_subnetwork" "vpc_subnetwork_private" {
-  name = "${var.GCP_VPC}-shared-sn"
-
+  name          = "${var.GCP_VPC}-shared-sn"
   project       = var.GCP_PROJECT
   region        = "us-central1"
   network       = google_compute_network.vpc.self_link
@@ -116,7 +115,7 @@ resource "google_container_cluster" "primary" {
   }
 }
 
-resource "google_container_node_pool" "primary_preemptible_nodes" {
+resource "google_container_node_pool" "primary_nodes" {
   name       = "${google_container_cluster.primary.name}-nodepool"
   location   = "us-central1"
   cluster    = google_container_cluster.primary.name
