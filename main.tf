@@ -116,10 +116,11 @@ resource "google_container_cluster" "primary" {
 }
 
 resource "google_container_node_pool" "primary_nodes" {
-  name       = "${google_container_cluster.primary.name}-nodepool"
-  location   = "us-central1"
-  cluster    = google_container_cluster.primary.name
-  node_count = 2
+  name              = "${google_container_cluster.primary.name}-nodepool"
+  location          = "us-central1"
+  cluster           = google_container_cluster.primary.name
+  node_count        = 2
+  max_pods_per_node = 20
 
   node_config {
     preemptible  = false
