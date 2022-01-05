@@ -108,19 +108,15 @@ resource "google_container_cluster" "primary" {
   remove_default_node_pool = true
   initial_node_count       = 1
   network                  = "${var.GCP_VPC}-k8s"
-  subnetwork               = "${var.GCP_VPC}-k8s-sn"
-  ip_allocation_policy {
-    cluster_secondary_range_name  = "${var.GCP_VPC}-k8s-pods"
-    services_secondary_range_name = "${var.GCP_VPC}-k8s-services"
-  }
+  //subnetwork               = "${var.GCP_VPC}-k8s-sn"
 }
 
 resource "google_container_node_pool" "primary_nodes" {
-  name              = "${google_container_cluster.primary.name}-nodepool"
-  location          = "us-central1"
-  cluster           = google_container_cluster.primary.name
-  node_count        = 2
-  max_pods_per_node = 20 //does this work
+  name       = "${google_container_cluster.primary.name}-nodepool"
+  location   = "us-central1"
+  cluster    = google_container_cluster.primary.name
+  node_count = 2
+  // max_pods_per_node = 20 //does this work?
 
   node_config {
     preemptible  = false
