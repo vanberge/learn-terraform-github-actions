@@ -1,4 +1,5 @@
-# Automate Terraform with GitHub Actions
+# Automate GCP Resources with Terraform with GitHub Actions
 
 
-This repo is a companion repo to the [Automate Terraform with GitHub Actions](https://learn.hashicorp.com/tutorials/terraform/github-actions?in=terraform/automation).
+Originally forked from: [Automate Terraform with GitHub Actions](https://learn.hashicorp.com/tutorials/terraform/github-actions?in=terraform/automation).
+
