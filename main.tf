@@ -63,7 +63,7 @@ resource "google_compute_network" "k8s_vpc" {
 }
 
 resource "google_compute_subnetwork" "k8s_vpc_subnetwork_private" {
-  name          = "${var.GCP_VPC}-k8s"
+  name          = "${var.GCP_VPC}-k8s-sn"
   project       = var.GCP_PROJECT
   region        = "us-central1"
   network       = google_compute_network.k8s_vpc.self_link
@@ -107,8 +107,8 @@ resource "google_container_cluster" "primary" {
   location                 = "us-central1"
   remove_default_node_pool = true
   initial_node_count       = 1
-  network                  = var.GCP_VPC
-  subnetwork               = "${var.GCP_VPC}-k8s"
+  network                  = "${var.GCP_VPC}-k8s"
+  subnetwork               = "${var.GCP_VPC}-k8s-sn"
   ip_allocation_policy {
     cluster_secondary_range_name  = "${var.GCP_VPC}-k8s-pods"
     services_secondary_range_name = "${var.GCP_VPC}-k8s-services"
