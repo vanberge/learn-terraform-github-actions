@@ -2,4 +2,4 @@
 
 
 Originally forked from: [Automate Terraform with GitHub Actions](https://github.com/hashicorp/learn-terraform-github-actions).
-Re-fitted to leverage GCP vs AWS
+Re-fitted to leverage Google Cloud platform
